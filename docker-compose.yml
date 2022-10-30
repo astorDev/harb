@@ -1,0 +1,16 @@
+version: '3.9'
+
+services:
+  webapi:
+    image: harb_webapi
+    labels:
+      - family=nist
+    build:
+      context: webapi
+      dockerfile: Harb.WebApi/Dockerfile
+    environment:
+      - ASPNETCORE_SshHost=${ASPNETCORE_SshHost}
+      - ASPNETCORE_SshUsername=${ASPNETCORE_SshUsername}
+      - ASPNETCORE_SshPassword=${ASPNETCORE_SshPassword}
+    ports:
+      - "7200:80"
