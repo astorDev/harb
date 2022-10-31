@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   webapi:
-    image: harb_webapi
+    image: vosarat/harb-webapi:1.0
     labels:
       - family=nist
     build:
