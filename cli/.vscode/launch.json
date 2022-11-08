@@ -14,8 +14,8 @@
         {
             "type": "node",
             "request": "launch",
-            "args": [ "containers" ],
-            "name": "containers",
+            "args": [ "docker" ],
+            "name": "docker",
             "skipFiles": [
                 "<node_internals>/**"
             ],

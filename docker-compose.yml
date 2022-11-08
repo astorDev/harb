@@ -1,8 +1,26 @@
 version: '3.9'
 
+networks:
+  harb-net:
+    driver: bridge
+
+volumes:
+  elastic-data:
+
 services:
+  beat:
+    image: harb_beat
+    build:
+      context: .
+      dockerfile: beat/Harb.Beat/Dockerfile
+    environment:
+      - ApiUrl=http://webapi
+      - ElasticUrl=http://elasticsearch:9200
+    ports:
+      - "7210:90"
+
   webapi:
-    image: vosarat/harb-webapi:1.0
+    image: harb_webapi
     labels:
       - family=nist
     build:
@@ -14,3 +32,36 @@ services:
       - ASPNETCORE_SshPassword=${ASPNETCORE_SshPassword}
     ports:
       - "7200:80"
+
+  elasticsearch:
+    labels:
+      - family=infrastructure
+    image: elasticsearch:7.17.3 # the highest version that just works
+    restart: always
+    environment:
+      - discovery.type=single-node
+    ports:
+      - 9200:9200
+      - 9300:9300
+    volumes:
+      - elastic-data:/usr/share/elasticsearch/data
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: '500M'
+
+  kibana:
+    restart: always
+    labels:
+      - family=infrastructure
+    image: kibana:7.17.3
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - 5601:5601
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: '500M'
