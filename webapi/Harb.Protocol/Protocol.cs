@@ -17,6 +17,11 @@ public class Client {
     public Client(HttpClient http) { this.Http = http; }
 
     public Task<About> GetAbout() => this.Http.GetAsync(Uris.About).Read<About>();
+    
+    public Task<dynamic> GetMachineDynamic(CancellationToken? cancellationToken = null) => 
+        this.Http.GetAsync(Uris.Machine, cancellationToken ?? CancellationToken.None).Read<dynamic>();
+    public Task<dynamic> GetContainersDynamic(CancellationToken? cancellationToken = null) => 
+        this.Http.GetAsync(Uris.Containers, cancellationToken ?? CancellationToken.None).Read<dynamic>();
 }
 
 public class Errors {

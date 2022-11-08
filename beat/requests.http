@@ -1,0 +1,29 @@
+PUT http://localhost:9200/machine-2022.10.03/_doc/{{$guid}}
+
+{
+    "@timestamp" : "{{$datetime iso8601}}",
+    "body" : {
+      "cpu": {
+        "used": 16.25,
+        "total": 100,
+        "fraction": 0.16
+      },
+      "ram": {
+        "used": 6748651520,
+        "total": 17179869184,
+        "fraction": 0.39
+      },
+      "storage": {
+        "used": 176312123392,
+        "total": 250685575168,
+        "fraction": 0.7
+      }
+    }
+}
+
+
+###
+POST http://localhost:5000/HarbBeat_ShipMachine
+
+###
+POST http://localhost:5000/HarbBeat_ShipContainers

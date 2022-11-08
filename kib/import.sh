@@ -1,0 +1,1 @@
+curl --data "@dashboards.json" -H "Content-Type: application/json" -H "kbn-xsrf:true" -X POST http://localhost:5601/api/kibana/dashboards/import?force=true
