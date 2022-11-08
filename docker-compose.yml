@@ -9,7 +9,7 @@ volumes:
 
 services:
   beat:
-    image: harb_beat
+    image: vosarat/harb_beat
     build:
       context: .
       dockerfile: beat/Harb.Beat/Dockerfile
@@ -20,7 +20,7 @@ services:
       - "7210:90"
 
   webapi:
-    image: harb_webapi
+    image: vosarat/harb_webapi
     labels:
       - family=nist
     build:
