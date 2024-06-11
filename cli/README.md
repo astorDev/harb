@@ -3,7 +3,7 @@
 As a one time-script:
 
 ```sh
-npx harb machine
+npx harb-cli machine
 ```
 
 ```sh
