@@ -6,16 +6,18 @@ const { exec } = require('child_process')
 program
     .command('machine')
     .description('Retrieves machine resources utilization information')
+    .option('--compact', 'No JSON pretty print')
     .action(machine)
 
 program
     .command('containers')
     .description("Retrieves resources utilization by containers")
+    .option('--compact', 'No JSON pretty print')
     .action(containers)
 
 program.parse()
 
-async function machine() {
+async function machine(options) {
     var load = await si.currentLoad()
     var mem = await si.mem()
     var storage = await si.fsSize();
@@ -26,7 +28,7 @@ async function machine() {
         cpu : resource(load.currentLoad, 100),
         ram : resource(mem.active, mem.total),
         storage : resource(usedStorage, totalStorage)
-    })
+    }, options.compact)
 
     function resource(used, total) {
         return {
@@ -37,7 +39,7 @@ async function machine() {
     }
 }
 
-async function containers() {
+async function containers(options) {
     statsRaw = await run('docker stats --no-stream --format "{{ json .}}"');
     df = await run('docker system df --format "{{ json . }}" --verbose')
     siContainers = await si.dockerAll();
@@ -73,7 +75,7 @@ async function containers() {
         }
     })
 
-    logAsJson(containers)
+    logAsJson(containers, options.compact)
 }
 
 async function run(cmd) {
@@ -88,6 +90,6 @@ async function run(cmd) {
       });
 }
 
-function logAsJson(obj) {
-    console.log(JSON.stringify(obj, null, 2))
+function logAsJson(obj, compact = false) {
+    console.log(JSON.stringify(obj, null, compact ? 0 : 2))
 }
