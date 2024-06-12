@@ -60,6 +60,6 @@ Background jobs via PM2:
 ```sh
 curl -sSL https://raw.githubusercontent.com/astorDev/harb/main/pm2/install.sh | sh
 ```
-> ⚠️ `install.sh` finishes with running `pm2 startup` which sometimes only produces script you need to copy and run manually.
+> ⚠️ `install.sh` finishes with running `pm2 startup` which sometimes only produces a script you need to copy and run manually.
 
 Executes [this script](pm2/install.sh): Installs pm2, installs harb, schedules fresh `harb-machine` job for every 5 seconds and fresh `harb-containers` for every 30 seconds. Saves the configuration and sets pm2 to run on startup
