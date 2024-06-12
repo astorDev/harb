@@ -1,6 +1,6 @@
 {
   "name": "harb-cli",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -9,6 +9,10 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/astorDev/harb"
+  },
   "dependencies": {
     "commander": "^9.4.1",
     "systeminformation": "^5.12.7"
