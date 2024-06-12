@@ -1,21 +1,9 @@
-```sh
+npm install --global pm2
+npm install --global harb-cli
+pm2 update
+pm2 delete harb-machine
+pm2 delete harb-containers
 pm2 start harb --no-autorestart --name harb-machine --cron "*/5 * * * * *" -- machine --compact
-```
-
-```sh
 pm2 start harb --no-autorestart --name harb-containers --cron "*/30 * * * * *" -- containers --compact
-```
-
-```sh
 pm2 save
-```
-
-Generate a startup script (and copy and run it)
-
-```sh
 pm2 startup
-```
-
-```sh
-pm2 logs --out
-```
