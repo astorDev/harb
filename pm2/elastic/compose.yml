@@ -16,6 +16,7 @@ services:
     restart: always
     environment:
       - ELASTICSEARCH_HOSTS=[elasticsearch:9200]
+      - MACHINE=my-harb-machine
     user: root
     volumes:
       - $HOME/.pm2/logs:/logs
