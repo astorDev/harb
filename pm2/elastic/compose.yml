@@ -1,0 +1,22 @@
+services:
+  elasticsearch:
+    image: elasticsearch:7.17.3
+    environment:
+      - discovery.type=single-node
+  
+  kibana:
+    image: kibana:7.17.3
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - 5601:5601
+
+  pm2-logs-shipper:
+    image: docker.elastic.co/beats/filebeat:8.14.0
+    restart: always
+    environment:
+      - ELASTICSEARCH_HOSTS=[elasticsearch:9200]
+    user: root
+    volumes:
+      - $HOME/.pm2/logs:/logs
+      - ./filebeat.yml:/usr/share/filebeat/filebeat.yml
