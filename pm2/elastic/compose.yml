@@ -14,8 +14,6 @@ services:
   pm2-logs-shipper:
     image: docker.elastic.co/beats/filebeat:8.14.0
     restart: always
-    labels:
-      - family=infrastructure
     environment:
       - ELASTICSEARCH_HOSTS=[elasticsearch:9200]
     user: root
