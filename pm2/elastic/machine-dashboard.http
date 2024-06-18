@@ -1,6 +1,3 @@
-@host = http://localhost:5601
-@machine = my-harb-machine
-
 ###
 GET /api/kibana/dashboards/export?dashboard=5114ef80-2d43-11ef-abe8-5f9bd772b6c1
 
@@ -12,7 +9,7 @@ kbn-xsrf: true
   "version": "7.17.3",
   "objects": [
     {
-      "id": "5114ef80-2d43-11ef-abe8-5f9bd772b6c1",
+      "id": "{{ $guid }}",
       "type": "dashboard",
       "namespaces": [
         "default"
