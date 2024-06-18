@@ -20,6 +20,11 @@ processors:
     ignore_missing: false
     fail_on_error: false
 
+- add_fields:
+    target: ""
+    fields:
+      machine: "${MACHINE:unknown-machine}"
+
 - drop_fields:
     fields:
       - "/agent.*/"
@@ -28,4 +33,4 @@ processors:
 output.elasticsearch:
   hosts: ${ELASTICSEARCH_HOSTS}
   indices:
-    - index: "pm2-%{[log.file.path]}-%{+yyyy.MM.dd}"
+    - index: "pm2-%{[log.file.path]}-%{[machine]}-%{+yyyy.MM.dd}"
