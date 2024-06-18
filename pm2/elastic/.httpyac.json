@@ -1,0 +1,12 @@
+{
+    "environments": {
+        "localhost machine one" : {
+            "host" : "http://localhost:5601",
+            "machine" : "one"
+        },
+        "localhost machine two" : {
+            "host" : "http://localhost:5601",
+            "machine" : "two"
+        } 
+    }
+}
