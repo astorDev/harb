@@ -9,17 +9,17 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}/index.js"
+            "program": "${workspaceFolder}/cli/index.js"
         },
         {
             "type": "node",
             "request": "launch",
-            "args": [ "docker" ],
-            "name": "docker",
+            "args": [ "xxx" ],
+            "name": "xxx",
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}/index.js"
+            "program": "${workspaceFolder}/cli/index.js"
         }
     ]
 }

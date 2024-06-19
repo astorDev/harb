@@ -1,0 +1,16 @@
+{
+  "name": "harb",
+  "version": "1.4.0",
+  "description": "",
+  "keywords": [],
+  "author": "astorDev",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/astorDev/harb"
+  },
+  "dependencies": {
+    "commander": "^9.4.1",
+    "systeminformation": "^5.12.7"
+  }
+}

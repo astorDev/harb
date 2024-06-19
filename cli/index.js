@@ -1,105 +1,103 @@
 #! /usr/bin/env node
-const si = require('systeminformation')
+//const si = require('systeminformation')
 const { program } = require('commander')
-const { exec } = require('child_process')
+const { machine, containers } = require('../core')
+const { spawn } = require('child_process')
 
 program
     .command('machine')
     .description('Retrieves machine resources utilization information')
     .option('--compact', 'No JSON pretty print')
-    .action(machine)
+    .action(async (options) => {
+        var m = await machine();
+        logAsJson(m, options.compact)
+    })
 
 program
     .command('containers')
     .description("Retrieves resources utilization by containers")
     .option('--compact', 'No JSON pretty print')
     .option('--disarray', 'Single lines instead of array')
-    .action(containers)
+    .action(async (opt) => {
+        var cs = await containers()
+
+        if (opt.disarray) {
+            for (var c of cs) {
+                logAsJson(c, opt.compact)
+            }
+        }
+        else {
+            logAsJson(cs, opt.compact)
+        }
+    })
+
+var pm2 = program
+    .command('pm2')
+    .description('Operations on harb PM2-based infrastructure')
+
+pm2
+    .command('install')
+    .description('Installs PM2 periodic harb jobs')
+    .action(async () => {
+        await execRemotely(
+`
+cd pm2
+sh install.sh
+`);
+    })
+
+var pm2Elastic = pm2
+    .command('elastic')
+    .description('Operations on elastic infrastructure based on PM2')
+
+pm2Elastic
+    .command('global-dashboard')
+    .description("Creates global harb elastic dashboard")
+    .option('--kibana-url', 'Kibana URL', 'http://localhost:5601')
+    .action(async (opt) => {
+        await execRemotely(`
+cd pm2/elastic/global-dashboard
+export KIBANA_URL=${opt.kibanaUrl}
+sh .sh    
+`)
+    })
+
+pm2Elastic
+    .command('machine-dashboard')
+    .description("Creates a harb elastic dashboard for particular machine")
+    .requiredOption('--machine <name>', 'Machine name')
+    .option('--kibana <url>', 'Kibana URL', 'http://localhost:5601')
+    .action(async (opt) => {
+        await execRemotely(`
+cd pm2/elastic/machine-dashboard
+export MACHINE=${opt.machine}
+export KIBANA_URL=${opt.kibana}
+sh .sh
+`)
+    })
 
 program.parse()
 
-async function machine(options) {
-    var load = await si.currentLoad()
-    var mem = await si.mem()
-    var storage = await si.fsSize();
-    var totalStorage = storage.map(s => s.used + s.available).reduce((a, b) => a + b);
-    var usedStorage = storage.map(s => s.used).reduce((a, b) => a + b);
-    
-    logAsJson({
-        cpu : resource(load.currentLoad, 100),
-        ram : resource(mem.active, mem.total),
-        storage : resource(usedStorage, totalStorage)
-    }, options.compact)
-
-    function resource(used, total) {
-        return {
-            used : +used.toFixed(2),
-            total : total,
-            fraction : +(used / total).toFixed(2)
-        }
-    }
-}
-
-async function containers(options) {
-    statsRaw = await run('docker stats --no-stream --format "{{ json .}}"');
-    df = await run('docker system df --format "{{ json . }}" --verbose')
-    siContainers = await si.dockerAll();
-    
-    stats = statsRaw.split(/\r?\n/).filter(r => r != '').map(r => JSON.parse(r))
-    volumes = JSON.parse(df).Volumes
-
-    if (options.disarray) {
-        for (var s of stats) {
-            var result = assembleContainerInformation(s, siContainers, volumes)
-            logAsJson(result, options.compact)
-        }
-    }
-    else {
-        var result = stats.map(s => assembleContainerInformation(s, siContainers, volumes))
-        logAsJson(result, options.compact)
-    }
-}
-
-function assembleContainerInformation(s, siContainers, volumes) {
-    var sic = siContainers.find(c => c.name == s.Name)
-    var cv = volumes.filter(v => sic.mounts.some(m => m.Name == v.Name)).map(v => v.Size)
-    var rx = cv.map(s => {
-        var matches = /^\d*\.?\d*/.exec(s);
-        var unit = s.replace(matches[0], '')
-        var unitBytes = {
-            "MiB": 1024 * 1024,
-            "MB": 1000 * 1000,
-            "GiB": 1024 * 1024 * 1024,
-            "GB": 1000 * 1000 * 1000,
-            "kB": 1000,
-            "B": 1
-        }
-
-        var multiplier = unitBytes[unit]
-        return matches[0] * multiplier;
-    })
-
-    return {
-        id: sic.id,
-        name: sic.name,
-        cpu: +s.CPUPerc.replace('%', ''),
-        ram: sic.memUsage,
-        storage: rx.reduce((a, b) => a + b, 0)
-    }
-}
-
-async function run(cmd) {
-    return new Promise(function (resolve, reject) {
-        exec(cmd, (err, stdout) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(stdout);
-          }
-        });
-      });
-}
-
 function logAsJson(obj, compact = false) {
     console.log(JSON.stringify(obj, null, compact ? 0 : 2))
+}
+
+async function execRemotely(cmd) {
+    await spawn(`
+curl -s https://raw.githubusercontent.com/astorDev/nice-shell/main/.sh -o /tmp/nice-shell.sh
+source /tmp/nice-shell.sh
+
+log "Executing script from harb repository."    
+cd /tmp
+log "Removing harb directory from temp folder"
+rm -rf harb
+log "Cloning harb repository"
+git clone https://github.com/astorDev/harb.git
+cd harb
+${cmd}
+`,
+    {
+        shell: true,
+        stdio: ['ignore', 'inherit', 'inherit']
+    });
 }

@@ -1,24 +1,25 @@
 {
   "name": "harb-cli",
-  "version": "1.4.0",
-  "description": "",
+  "version": "1.5.0",
+  "description": "Machine metrics cli util",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "https://github.com/astorDev/harb"
+    "url": "git+https://github.com/astorDev/harb.git"
   },
+  "keywords": [
+    "metrics"
+  ],
+  "author": "astorDev",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/astorDev/harb/issues"
+  },
+  "homepage": "https://github.com/astorDev/harb#readme",
   "dependencies": {
-    "commander": "^9.4.1",
-    "harb-cli": "^1.4.0",
-    "systeminformation": "^5.12.7"
-  },
-  "bin": {
-    "harb": "./index.js"
+    "commander": "^12.1.0"
   }
 }
