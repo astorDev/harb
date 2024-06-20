@@ -85,7 +85,7 @@ function logAsJson(obj, compact = false) {
 async function execRemotely(cmd) {
     await spawn(`
 curl -s https://raw.githubusercontent.com/astorDev/nice-shell/main/.sh -o /tmp/nice-shell.sh
-source /tmp/nice-shell.sh
+. /tmp/nice-shell.sh
 
 log "Executing script from harb repository."    
 cd /tmp
