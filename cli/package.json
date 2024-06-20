@@ -1,6 +1,6 @@
 {
   "name": "harb-cli",
-  "version": "1.5.0",
+  "version": "1.8.0",
   "description": "Machine metrics cli util",
   "main": "index.js",
   "scripts": {
@@ -20,6 +20,10 @@
   },
   "homepage": "https://github.com/astorDev/harb#readme",
   "dependencies": {
-    "commander": "^12.1.0"
+    "commander": "^12.1.0",
+    "harb-core": "^1.0.0"
+  },
+  "bin": {
+    "harb": "./index.js"
   }
 }

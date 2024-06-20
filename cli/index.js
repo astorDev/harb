@@ -1,7 +1,7 @@
 #! /usr/bin/env node
-//const si = require('systeminformation')
+
 const { program } = require('commander')
-const { machine, containers } = require('../core')
+const { machine, containers } = require('harb-core')
 const { spawn } = require('child_process')
 
 program
