@@ -1,6 +1,6 @@
 #!/bin/bash
 curl -s https://raw.githubusercontent.com/astorDev/nice-shell/main/.sh -o /tmp/nice-shell.sh
-source /tmp/nice-shell.sh
+. /tmp/nice-shell.sh
 
 docker compose up -d
 cd ../global-dashboard
