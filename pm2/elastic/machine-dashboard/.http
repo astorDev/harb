@@ -131,7 +131,7 @@ kbn-xsrf: true
       "version": "Wzg1LDFd",
       "attributes": {
         "fieldAttrs": "{}",
-        "title": "pm2-harb-machine-out-two-*",
+        "title": "pm2-harb-machine-out-{{ machine }}-*",
         "timeFieldName": "@timestamp",
         "fields": "[]",
         "typeMeta": "{}",
@@ -153,7 +153,7 @@ kbn-xsrf: true
       "version": "Wzg2LDFd",
       "attributes": {
         "fieldAttrs": "{}",
-        "title": "pm2-harb-containers-out-two-*",
+        "title": "pm2-harb-containers-out-{{ machine }}-*",
         "timeFieldName": "@timestamp",
         "fields": "[]",
         "typeMeta": "{}",
